@@ -353,7 +353,7 @@ function hitObstacle() {
                 context.font = "72px Arial";
                 context.fillStyle = "red";
                 context.textAlign = "center";
-                context.fillText("memeszn takeover fail lol", canvas.width / 2, canvas.height / 2);
+                context.fillText("memeszn $takeova fail lol", canvas.width / 2, canvas.height / 2);
             }
         }
     }
