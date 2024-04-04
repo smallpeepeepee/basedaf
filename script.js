@@ -82,7 +82,7 @@ function startGame() {
     */
     var playerLogoUrl = "https://i.postimg.cc/J0XD8hyh/bryanarmstrong-qr-code.png";
     var obstacleLogoUrl = "https://i.postimg.cc/0267DQKW/6u-LQfj-G-400x400.jpg";
-    var goalImageUrl = "./assets/EndZone.png"
+    var goalImageUrl = "https://i.postimg.cc/B6Fpd7DP/End-Zone-On-Base-Wtf.png"
 
     /*
         The player is the person that you move around the screen and try to get to the endzone.
