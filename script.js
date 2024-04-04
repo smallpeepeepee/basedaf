@@ -82,7 +82,7 @@ function startGame() {
     */
     var playerLogoUrl = "https://i.postimg.cc/J0XD8hyh/bryanarmstrong-qr-code.png";
     var obstacleLogoUrl = "https://i.postimg.cc/0267DQKW/6u-LQfj-G-400x400.jpg";
-    var goalImageUrl = "https://i.postimg.cc/B6Fpd7DP/End-Zone-On-Base-Wtf.png"
+    var goalImageUrl = ""
 
     /*
         The player is the person that you move around the screen and try to get to the endzone.
@@ -353,7 +353,7 @@ function hitObstacle() {
                 context.font = "72px Arial";
                 context.fillStyle = "blue";
                 context.textAlign = "center";
-                context.fillText("why u let bwyan down? bwyan sad cuz solana win now :(", canvas.width / 2, canvas.height / 2);
+                context.fillText("memeszn takeover fail lol", canvas.width / 2, canvas.height / 2);
             }
         }
     }
