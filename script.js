@@ -327,7 +327,7 @@ function atObjective() {
             context.font = "72px Arial";
             context.fillStyle = "red";
             context.textAlign = "center";
-            context.fillText("TOUCHDOWN!", canvas.width / 2, canvas.height / 2);
+            context.fillText("BASED.", canvas.width / 2, canvas.height / 2);
         }
     }
 }
@@ -353,7 +353,7 @@ function hitObstacle() {
                 context.font = "72px Arial";
                 context.fillStyle = "blue";
                 context.textAlign = "center";
-                context.fillText("You got tackled!", canvas.width / 2, canvas.height / 2);
+                context.fillText("why u let bwyan down? bwyan sad cuz solana win now :(", canvas.width / 2, canvas.height / 2);
             }
         }
     }
