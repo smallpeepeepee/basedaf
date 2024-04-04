@@ -1,10 +1,10 @@
 nav.navbar.navbar-dark.bg-dark.bg-scarlet {
-    background-color: #bb0000 !important;
+    background-color: #05caff !important;
 }
 
 canvas#board {
     border: 2px solid black;
-    background-image: url('./assets/FootballField.jpg');
+    background-image: url('https://i.postimg.cc/bNWhfJzb/Based-Field-Zone.png');
 }
 
 button.btn-secondary {
