@@ -80,7 +80,7 @@ function startGame() {
         You can change them to different image URL's from the internet.
         Just paste it right in!
     */
-    var playerLogoUrl = "https://i.postimg.cc/J0XD8hyh/bryanarmstrong-qr-code.png";
+    var playerLogoUrl = "https://i.postimg.cc/fT6f7VCK/bryanarmstrong-qr-codeblueoutline.png";
     var obstacleLogoUrl = "https://i.postimg.cc/0267DQKW/6u-LQfj-G-400x400.jpg";
     var goalImageUrl = ""
 
