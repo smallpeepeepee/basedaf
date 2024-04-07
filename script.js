@@ -28,10 +28,6 @@ var down = false;
 var right = false;
 var left = false;
 
-// Counter for attempts and timer
-var attempts = 0;
-var timer;
-
 function nextLevel() {
     document.getElementById('nextLevelButton').style.display = "none";
     level++;
@@ -58,9 +54,6 @@ function loadGame() {
         let playInnerHtml = "<i class='material-icons float-left'>play_arrow</i>&nbsp;Play";
         document.getElementById("playRestartButton").innerHTML = playInnerHtml;
     });
-
-    // Start the timer
-    timer = setInterval(updateTimer, 1000);
 }
 
 // Stops the game.
@@ -69,15 +62,11 @@ function stopGame() {
         clearInterval(intervalId);
     }
     intervalId = null;
-    clearInterval(timer);
 }
 
 // Starts the game and sets up levels
 function startGame() {
     stopGame();
-
-    attempts = 0; // Reset attempts counter
-    updateTracker(); // Update tracker display
 
     /*
         As you can see below, I talk a lot about x and y coordinates.  
@@ -93,7 +82,7 @@ function startGame() {
     */
     var playerLogoUrl = "https://i.postimg.cc/fT6f7VCK/bryanarmstrong-qr-codeblueoutline.png";
     var obstacleLogoUrl = "https://i.postimg.cc/0267DQKW/6u-LQfj-G-400x400.jpg";
-    var goalImageUrl = ""
+    var goalImageUrl = "";
 
     /*
         The player is the person that you move around the screen and try to get to the endzone.
@@ -139,7 +128,8 @@ function startGame() {
             new Obstacle(obstacleLogoUrl, OBSTACLE_SIZE, OBSTACLE_SIZE, topLeftOriginPoint, defaultEndPoint, new Point(900, 0), 0, .12),
             new Obstacle(obstacleLogoUrl, OBSTACLE_SIZE, OBSTACLE_SIZE, topLeftOriginPoint, defaultEndPoint, new Point(500, 50), 0, .11)
         ];
-    } else if (level == 2) {
+    }
+    else if (level == 2) {
         obstacles = [
             new Obstacle(obstacleLogoUrl, OBSTACLE_SIZE, OBSTACLE_SIZE, new Point(100, 0), new Point(1200, 500), new Point(100, 0), .1, .2),
             new Obstacle(obstacleLogoUrl, OBSTACLE_SIZE, OBSTACLE_SIZE, new Point(300, 0), new Point(1200, 500), new Point(300, 0), .1, .2),
@@ -151,7 +141,8 @@ function startGame() {
             new Obstacle(obstacleLogoUrl, OBSTACLE_SIZE, OBSTACLE_SIZE, new Point(0, 200), new Point(1200, 500), new Point(1000, 200), .5, 0),
 
         ];
-    } else if (level == 3) {
+    }
+    else if (level == 3) {
         obstacles = [
             new Obstacle(obstacleLogoUrl, OBSTACLE_SIZE, OBSTACLE_SIZE, topLeftOriginPoint, defaultEndPoint, new Point(0, 120), 1, 0),
             new Obstacle(obstacleLogoUrl, OBSTACLE_SIZE, OBSTACLE_SIZE, topLeftOriginPoint, defaultEndPoint, new Point(0, 320), 1, 0),
@@ -174,46 +165,11 @@ function startGame() {
     intervalId = setInterval(updateGameState, updateInterval);
 }
 
-// 2D point within bounds of screen
-class Point {
-    constructor(x, y) {
-        this.x = x;
-        this.y = y;
-
-        this.checkPoint();
-    }
-
-    checkPoint() {
-        if (this.x < X_MIN || this.x > X_MAX) {
-            alert("x-coordinate " + this.x + " is out of range, xMin = " + X_MIN + " and xMax = " + X_MAX);
-        }
-        if (this.y < Y_MIN || this.y > Y_MAX) {
-            alert("y-coordinate " + this.y + " is out of range, yMin = " + Y_MIN + " and yMax = " + Y_MAX);
-        }
-    }
-
-    subtractX(subtractFromX) {
-        this.x -= subtractFromX;
-    }
-
-    subtractY(subtractFromY) {
-        this.y -= subtractFromY;
-    }
-
-    addX(addToX) {
-        this.x += addToX;
-    }
-
-    addY(addToY) {
-        this.y += addToY;
-    }
-}
-
 // Useful constants
 var topLeftOriginPoint = new Point(X_MIN, Y_MIN);
 var defaultEndPoint = new Point(X_MAX, Y_MAX);
 
-// Reads the keyboard for keystrokes - changing these will break thet game
+// Reads the keyboard for keystrokes - changing these will break the game
 document.addEventListener('keydown', (e) => {
     e.preventDefault();
     if (e.code === "ArrowUp") {
@@ -357,12 +313,8 @@ function hitObstacle() {
         for (var i = 0; i < 4; i++) {
             var point = points[i];
             if (obstacleLeft < point.x && point.x < obstacleRight && obstacleTop < point.y && point.y < obstacleBottom) {
-                stopGame();
-                clearCanvas();
-                context.font = "72px Arial";
-                context.fillStyle = "red";
-                context.textAlign = "center";
-                context.fillText("memeszn $takeova fail lol", canvas.width / 2, canvas.height / 2);
+                // Reload the same website upon collision with an obstacle
+                window.location.href = window.location.href;
             }
         }
     }
@@ -413,19 +365,29 @@ function drawImage(image, point) {
     context.drawImage(image, point.x, point.y, image.width, image.height);
 }
 
-// Updates the timer
-function updateTimer() {
-    document.getElementById('tracker').innerHTML = `Attempts: ${attempts} | Time: ${timeConverter(timer)}`;
+// Point object used for positions on the canvas
+class Point {
+    constructor(x, y) {
+        this.x = x;
+        this.y = y;
+    }
+
+    addX(value) {
+        this.x += value;
+    }
+
+    addY(value) {
+        this.y += value;
+    }
+
+    subtractX(value) {
+        this.x -= value;
+    }
+
+    subtractY(value) {
+        this.y -= value;
+    }
 }
 
-// Updates the attempts tracker
-function updateTracker() {
-    document.getElementById('tracker').innerHTML = `Attempts: ${attempts} | Time: 00:00`;
-}
-
-// Converts time in seconds to MM:SS format
-function timeConverter(timeInSeconds) {
-    let minutes = Math.floor(timeInSeconds / 60);
-    let seconds = timeInSeconds % 60;
-    return `${minutes < 10 ? '0' + minutes : minutes}:${seconds < 10 ? '0' + seconds : seconds}`;
-}
+// Load game when page loads
+window.onload = loadGame;
