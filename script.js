@@ -325,7 +325,7 @@ function atObjective() {
                 document.getElementById('nextLevelButton').style.display = "inline";
             }
             context.font = "72px Arial";
-            context.fillStyle = "red";
+            context.fillStyle = "blue";
             context.textAlign = "center";
             context.fillText("BASED.", canvas.width / 2, canvas.height / 2);
         }
@@ -351,7 +351,7 @@ function hitObstacle() {
                 stopGame();
                 clearCanvas();
                 context.font = "72px Arial";
-                context.fillStyle = "blue";
+                context.fillStyle = "red";
                 context.textAlign = "center";
                 context.fillText("$ERROR", canvas.width / 2, canvas.height / 2);
             }
