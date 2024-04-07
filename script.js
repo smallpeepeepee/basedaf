@@ -82,7 +82,7 @@ function startGame() {
     */
     var playerLogoUrl = "https://i.postimg.cc/fT6f7VCK/bryanarmstrong-qr-codeblueoutline.png";
     var obstacleLogoUrl = "https://i.postimg.cc/0267DQKW/6u-LQfj-G-400x400.jpg";
-    var goalImageUrl = "";
+    var goalImageUrl = "https://i.postimg.cc/nctXFJMy/bsodhomebase.png"
 
     /*
         The player is the person that you move around the screen and try to get to the endzone.
@@ -104,7 +104,7 @@ function startGame() {
         The thrid item is the height of the goal image.
         The fourth item is the point where the goal image is drawn.
     */
-    goal = new Objective(goalImageUrl, 130, 500, new Point(1070, 0));
+   goal = new Objective(goalImageUrl, 130, 500, new Point(1070, 0));
 
     // This is the select to switch between levels.  We suggest that you do not mess with this.
     var levelDropdown = document.getElementById("level-select");
@@ -165,11 +165,46 @@ function startGame() {
     intervalId = setInterval(updateGameState, updateInterval);
 }
 
+// 2D point within bounds of screen
+class Point {
+    constructor(x, y) {
+        this.x = x;
+        this.y = y;
+
+        this.checkPoint();
+    }
+
+    checkPoint() {
+        if (this.x < X_MIN || this.x > X_MAX) {
+            alert("x-coordinate " + this.x + " is out of range, xMin = " + X_MIN + " and xMax = " + X_MAX);
+        }
+        if (this.y < Y_MIN || this.y > Y_MAX) {
+            alert("y-coordinate " + this.y + " is out of range, yMin = " + Y_MIN + " and yMax = " + Y_MAX);
+        }
+    }
+
+    subtractX(subtractFromX) {
+        this.x -= subtractFromX;
+    }
+
+    subtractY(subtractFromY) {
+        this.y -= subtractFromY;
+    }
+
+    addX(addToX) {
+        this.x += addToX;
+    }
+
+    addY(addToY) {
+        this.y += addToY;
+    }
+}
+
 // Useful constants
 var topLeftOriginPoint = new Point(X_MIN, Y_MIN);
 var defaultEndPoint = new Point(X_MAX, Y_MAX);
 
-// Reads the keyboard for keystrokes - changing these will break the game
+// Reads the keyboard for keystrokes - changing these will break thet game
 document.addEventListener('keydown', (e) => {
     e.preventDefault();
     if (e.code === "ArrowUp") {
@@ -290,7 +325,7 @@ function atObjective() {
                 document.getElementById('nextLevelButton').style.display = "inline";
             }
             context.font = "72px Arial";
-            context.fillStyle = "blue";
+            context.fillStyle = "red";
             context.textAlign = "center";
             context.fillText("BASED.", canvas.width / 2, canvas.height / 2);
         }
@@ -313,8 +348,12 @@ function hitObstacle() {
         for (var i = 0; i < 4; i++) {
             var point = points[i];
             if (obstacleLeft < point.x && point.x < obstacleRight && obstacleTop < point.y && point.y < obstacleBottom) {
-                // Reload the same website upon collision with an obstacle
-                window.location.href = window.location.href;
+                stopGame();
+                clearCanvas();
+                context.font = "72px Arial";
+                context.fillStyle = "blue";
+                context.textAlign = "center";
+                context.fillText("$ERROR", canvas.width / 2, canvas.height / 2);
             }
         }
     }
@@ -364,30 +403,3 @@ function clearCanvas() {
 function drawImage(image, point) {
     context.drawImage(image, point.x, point.y, image.width, image.height);
 }
-
-// Point object used for positions on the canvas
-class Point {
-    constructor(x, y) {
-        this.x = x;
-        this.y = y;
-    }
-
-    addX(value) {
-        this.x += value;
-    }
-
-    addY(value) {
-        this.y += value;
-    }
-
-    subtractX(value) {
-        this.x -= value;
-    }
-
-    subtractY(value) {
-        this.y -= value;
-    }
-}
-
-// Load game when page loads
-window.onload = loadGame;
