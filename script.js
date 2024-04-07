@@ -1,15 +1,15 @@
 // World's Hardest Game, 2019 - 2020
 
-// Details for the screen and its size
+// Details for the screen and its size - Changing these will not help you win
 const X_MIN = 0;
 const X_MAX = 1200;
 const Y_MIN = 0;
 const Y_MAX = 500;
 
-// Controls the height and width of an obstacle
+// Controls the height and width of an obstacle... smaller obstacles might be easier to avoid
 const OBSTACLE_SIZE = 80;
 
-// Global variables for the HTML5 canvas
+// Global variables for the HTML5 canvas - Removing these will likely break the game
 var canvas;
 var context;
 var player;
@@ -17,7 +17,6 @@ var obstacles;
 var level;
 var course;
 var goal;
-var reloadUrl = "https://bsod-a0bae0.webflow.io/";
 
 // Information for setInterval() and clearInterval()
 var intervalId;
@@ -28,6 +27,10 @@ var up = false;
 var down = false;
 var right = false;
 var left = false;
+
+// Counter for attempts and timer
+var attempts = 0;
+var timer;
 
 function nextLevel() {
     document.getElementById('nextLevelButton').style.display = "none";
@@ -55,6 +58,9 @@ function loadGame() {
         let playInnerHtml = "<i class='material-icons float-left'>play_arrow</i>&nbsp;Play";
         document.getElementById("playRestartButton").innerHTML = playInnerHtml;
     });
+
+    // Start the timer
+    timer = setInterval(updateTimer, 1000);
 }
 
 // Stops the game.
@@ -63,11 +69,15 @@ function stopGame() {
         clearInterval(intervalId);
     }
     intervalId = null;
+    clearInterval(timer);
 }
 
 // Starts the game and sets up levels
 function startGame() {
     stopGame();
+
+    attempts = 0; // Reset attempts counter
+    updateTracker(); // Update tracker display
 
     /*
         As you can see below, I talk a lot about x and y coordinates.  
@@ -129,8 +139,7 @@ function startGame() {
             new Obstacle(obstacleLogoUrl, OBSTACLE_SIZE, OBSTACLE_SIZE, topLeftOriginPoint, defaultEndPoint, new Point(900, 0), 0, .12),
             new Obstacle(obstacleLogoUrl, OBSTACLE_SIZE, OBSTACLE_SIZE, topLeftOriginPoint, defaultEndPoint, new Point(500, 50), 0, .11)
         ];
-    }
-    else if (level == 2) {
+    } else if (level == 2) {
         obstacles = [
             new Obstacle(obstacleLogoUrl, OBSTACLE_SIZE, OBSTACLE_SIZE, new Point(100, 0), new Point(1200, 500), new Point(100, 0), .1, .2),
             new Obstacle(obstacleLogoUrl, OBSTACLE_SIZE, OBSTACLE_SIZE, new Point(300, 0), new Point(1200, 500), new Point(300, 0), .1, .2),
@@ -142,8 +151,7 @@ function startGame() {
             new Obstacle(obstacleLogoUrl, OBSTACLE_SIZE, OBSTACLE_SIZE, new Point(0, 200), new Point(1200, 500), new Point(1000, 200), .5, 0),
 
         ];
-    }
-    else if (level == 3) {
+    } else if (level == 3) {
         obstacles = [
             new Obstacle(obstacleLogoUrl, OBSTACLE_SIZE, OBSTACLE_SIZE, topLeftOriginPoint, defaultEndPoint, new Point(0, 120), 1, 0),
             new Obstacle(obstacleLogoUrl, OBSTACLE_SIZE, OBSTACLE_SIZE, topLeftOriginPoint, defaultEndPoint, new Point(0, 320), 1, 0),
@@ -171,6 +179,7 @@ class Point {
     constructor(x, y) {
         this.x = x;
         this.y = y;
+
         this.checkPoint();
     }
 
@@ -204,7 +213,7 @@ class Point {
 var topLeftOriginPoint = new Point(X_MIN, Y_MIN);
 var defaultEndPoint = new Point(X_MAX, Y_MAX);
 
-// Reads the keyboard for keystrokes
+// Reads the keyboard for keystrokes - changing these will break thet game
 document.addEventListener('keydown', (e) => {
     e.preventDefault();
     if (e.code === "ArrowUp") {
@@ -297,7 +306,7 @@ function updateGameState() {
 }
 
 function atObjective() {
-    //This is a complicated method!
+    //This is a complicated method!  Ask us if you are confused!
 
     // These make a bounding box of where the goal is
     var objectiveLeft = goal.point.x;
@@ -311,7 +320,7 @@ function atObjective() {
         new Point(player.currentPoint.x + player.image.width, player.currentPoint.y),
         new Point(player.currentPoint.x, player.currentPoint.y + player.image.height),
         new Point(player.currentPoint.x + player.image.width, player.currentPoint.y + player.image.height)
-    ];
+    ]
 
     // This loops through the array of points to see if the 
     for (var i = 0; i < 4; i++) {
@@ -343,7 +352,7 @@ function hitObstacle() {
         var points = [new Point(player.currentPoint.x, player.currentPoint.y),
         new Point(player.currentPoint.x + player.image.width, player.currentPoint.y),
         new Point(player.currentPoint.x, player.currentPoint.y + player.image.height),
-        new Point(player.currentPoint.x + player.image.width, player.currentPoint.y + player.image.height)];
+        new Point(player.currentPoint.x + player.image.width, player.currentPoint.y + player.image.height)]
 
         for (var i = 0; i < 4; i++) {
             var point = points[i];
@@ -354,8 +363,6 @@ function hitObstacle() {
                 context.fillStyle = "red";
                 context.textAlign = "center";
                 context.fillText("memeszn $takeova fail lol", canvas.width / 2, canvas.height / 2);
-                // Reload the page
-                window.location.href = reloadUrl;
             }
         }
     }
@@ -406,8 +413,19 @@ function drawImage(image, point) {
     context.drawImage(image, point.x, point.y, image.width, image.height);
 }
 
-// Loads the game when the page loads.
-window.onload = loadGame;
-
+// Updates the timer
+function updateTimer() {
+    document.getElementById('tracker').innerHTML = `Attempts: ${attempts} | Time: ${timeConverter(timer)}`;
 }
 
+// Updates the attempts tracker
+function updateTracker() {
+    document.getElementById('tracker').innerHTML = `Attempts: ${attempts} | Time: 00:00`;
+}
+
+// Converts time in seconds to MM:SS format
+function timeConverter(timeInSeconds) {
+    let minutes = Math.floor(timeInSeconds / 60);
+    let seconds = timeInSeconds % 60;
+    return `${minutes < 10 ? '0' + minutes : minutes}:${seconds < 10 ? '0' + seconds : seconds}`;
+}
