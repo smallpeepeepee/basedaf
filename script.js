@@ -80,9 +80,9 @@ function startGame() {
         You can change them to different image URL's from the internet.
         Just paste it right in!
     */
-    var playerLogoUrl = "./assets/OhioStateLogo.jpg";
-    var obstacleLogoUrl = "./assets/MichiganLogo.png";
-    var goalImageUrl = "./assets/EndZone.png"
+    var playerLogoUrl = "https://i.postimg.cc/fT6f7VCK/bryanarmstrong-qr-codeblueoutline.png";
+    var obstacleLogoUrl = "https://i.postimg.cc/0267DQKW/6u-LQfj-G-400x400.jpg";
+    var goalImageUrl = "https://i.postimg.cc/nctXFJMy/bsodhomebase.png"
 
     /*
         The player is the person that you move around the screen and try to get to the endzone.
@@ -325,9 +325,9 @@ function atObjective() {
                 document.getElementById('nextLevelButton').style.display = "inline";
             }
             context.font = "72px Arial";
-            context.fillStyle = "red";
+            context.fillStyle = "blue";
             context.textAlign = "center";
-            context.fillText("TOUCHDOWN!", canvas.width / 2, canvas.height / 2);
+            context.fillText("BASED.", canvas.width / 2, canvas.height / 2);
         }
     }
 }
@@ -351,9 +351,9 @@ function hitObstacle() {
                 stopGame();
                 clearCanvas();
                 context.font = "72px Arial";
-                context.fillStyle = "blue";
+                context.fillStyle = "red";
                 context.textAlign = "center";
-                context.fillText("You got tackled!", canvas.width / 2, canvas.height / 2);
+                context.fillText("$ERROR", canvas.width / 2, canvas.height / 2);
             }
         }
     }
